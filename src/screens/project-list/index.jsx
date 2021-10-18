@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { cleanObject } from "../../util/util";
+import { cleanObject, useDebounce } from "../../util/util";
 import * as qs from "qs";
 
 
@@ -14,15 +14,16 @@ export const ProjectList = () => {
     name: '',
     personId: ''
   })
+  const debounceParam = useDebounce(param, 500)
   const [list, setList] = useState([])
 
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async response => {
+    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(async response => {
       if (response.ok) {
         setList(await response.json())
       }
     })
-  }, [param])
+  }, [debounceParam])
 
   useEffect(() => {
     fetch(`${apiUrl}/users`).then(async response => {
