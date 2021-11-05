@@ -4,6 +4,7 @@ import { List } from "./list";
 import { cleanObject, useDebounce, useMount } from "../../util/util";
 import * as qs from "qs";
 import { useHttp } from "../../util/http";
+import styled from "@emotion/styled";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -26,9 +27,14 @@ export const ProjectList = () => {
     client("users").then(setUsers);
   });
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel users={users} param={param} setParam={setParam} />
       <List list={list} users={users} />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 3.2rem;
+`
