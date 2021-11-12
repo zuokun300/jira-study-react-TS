@@ -4,18 +4,19 @@
  */
 import { useEffect, useState } from "react";
 
-export function cleanObject(obj: object) {
+// 当我们想要给传入的某个对象参数进行类型限制的时候，我们不应该使用object，因为js中函数本质上也是object的类型，所以如果我们希望是键值对的形式的对象，那就直接使用键值对来表示
+export function cleanObject(obj: { [key: string] : unknown}) {
   const result = { ...obj };
   Object.keys(result).forEach((key) => {
-    // @ts-ignore
     const value = result[key];
-    if (isFalsy(value)) {
-      // @ts-ignore
+    if (isVoid(value)) {
       delete result[key];
     }
   });
   return result;
 }
+
+export const isVoid = (value: unknown) => value === undefined || value === null || value === ''
 
 export const isFalsy = (value: unknown): boolean =>
   value === 0 ? false : !value;
@@ -34,7 +35,7 @@ export const isFalsy = (value: unknown): boolean =>
 // }
 // 写一个custom Hook防抖
 export const useDebounce = <V>(value: V, delay?: number) => {
-  const [debounceValue, setDebounceValue] = useState([value]);
+  const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
     // @ts-ignore
