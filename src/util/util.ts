@@ -93,3 +93,20 @@ export const useArray = <T>(initialValue: T[]) => {
     },
   };
 };
+
+// 写一个title的定义控件
+export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
+  let oldTitle = document.title
+  useEffect(() => {
+    document.title = title
+  }, [title])
+
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        console.log('卸载时的title：', oldTitle);
+        document.title = oldTitle
+      }
+    }
+  }, [])
+}

@@ -4,6 +4,7 @@ import {ReactComponent as SoftwareLogo} from "./assets/software-logo.svg";
 import styled from "@emotion/styled";
 import { Row } from "./components/lib";
 import { Dropdown, Menu } from "antd";
+import { useDocumentTitle } from "./util/util";
 
 /**
  * 分别从内容和布局出发
@@ -14,6 +15,7 @@ import { Dropdown, Menu } from "antd";
  */
 
 export const AuthenticatedApp = () => {
+  useDocumentTitle('项目列表', false)
   const { logout, user } = useAuth();
   return (
     <Container>
