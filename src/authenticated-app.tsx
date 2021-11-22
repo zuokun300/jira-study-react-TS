@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 import { Row } from "./components/lib";
 import { Dropdown, Menu } from "antd";
 import { useDocumentTitle } from "./util/util";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProjectScreen } from "./screens/project";
 
 /**
  * 分别从内容和布局出发
@@ -16,34 +18,42 @@ import { useDocumentTitle } from "./util/util";
 
 export const AuthenticatedApp = () => {
   useDocumentTitle('项目列表', false)
-  const { logout, user } = useAuth();
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
-          <h3>项目</h3>
-          <h3>用户</h3>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown overlay={<Menu>
-            <Menu.Item key={'logout'}>
-              <a onClick={logout}>登出</a>
-            </Menu.Item>
-          </Menu>}>
-            <a>
-              Hi,{user?.name}
-            </a>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <PageHeader/>
       <Main>
-        <ProjectList />
+        <Router>
+          <Routes>
+            <Route path={'/projects'} element={<ProjectList/>} />
+            <Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
+          </Routes>
+        </Router>
       </Main>
     </Container>
   );
 };
 
+const PageHeader = () => {
+  const { logout, user } = useAuth();
+  return <Header between={true}>
+    <HeaderLeft gap={true}>
+      <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
+      <h3>项目</h3>
+      <h3>用户</h3>
+    </HeaderLeft>
+    <HeaderRight>
+      <Dropdown overlay={<Menu>
+        <Menu.Item key={'logout'}>
+          <a onClick={logout}>登出</a>
+        </Menu.Item>
+      </Menu>}>
+        <a>
+          Hi,{user?.name}
+        </a>
+      </Dropdown>
+    </HeaderRight>
+  </Header>
+}
 
   const Container = styled.div`
     //display: grid;
