@@ -10,7 +10,7 @@ import {Helmet} from 'react-helmet'
 import { useDocumentTitle } from "../util/util";
 
 export const UnauthenticatedApp = () => {
-  useDocumentTitle('请先登录或者注册', false)
+  // useDocumentTitle('请先登录或者注册', false)
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null)
   return (

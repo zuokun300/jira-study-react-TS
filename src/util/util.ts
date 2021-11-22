@@ -2,7 +2,7 @@
  * 目的是清空对象中没有数据的元素
  * @param obj
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 当我们想要给传入的某个对象参数进行类型限制的时候，我们不应该使用object，因为js中函数本质上也是object的类型，所以如果我们希望是键值对的形式的对象，那就直接使用键值对来表示
 export function cleanObject(obj: { [key: string] : unknown}) {
@@ -96,7 +96,7 @@ export const useArray = <T>(initialValue: T[]) => {
 
 // 写一个title的定义控件
 export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
-  let oldTitle = document.title
+  let oldTitle = useRef(document.title).current
   useEffect(() => {
     document.title = title
   }, [title])
@@ -104,9 +104,8 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
   useEffect(() => {
     return () => {
       if (!keepOnUnmount) {
-        console.log('卸载时的title：', oldTitle);
         document.title = oldTitle
       }
     }
-  }, [])
+  }, [keepOnUnmount, oldTitle])
 }
